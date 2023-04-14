@@ -1,0 +1,14 @@
+WITH model AS (
+  SELECT 'MACBOOK AIR 2022' AS model
+  UNION ALL
+  SELECT 'MACBOOK 2022 AIR' AS model
+),
+patterns AS (
+  SELECT '([0-9]{4})' AS pattern1,
+         '(AIR|PRO|RETINA)' AS pattern2
+)
+SELECT model,
+       SUBSTR(REGEXP_EXTRACT(model, pattern1), 1, 4) AS year,
+       REGEXP_REPLACE(model, CONCAT(' ', pattern1), '') AS model_without_year,
+       REGEXP_REPLACE(REGEXP_REPLACE(model, CONCAT(' ', pattern1), ''), pattern2, '') AS model_without_year_or_type
+FROM model, patterns;
